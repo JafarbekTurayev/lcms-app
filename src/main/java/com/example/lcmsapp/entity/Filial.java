@@ -1,6 +1,7 @@
 package com.example.lcmsapp.entity;
 
 import com.example.lcmsapp.entity.template.AbsNameEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.boot.autoconfigure.cassandra.CassandraAutoConfiguration;
 
@@ -17,11 +18,13 @@ import java.util.List;
 public class Filial extends AbsNameEntity {
 
     //xodimlar soni
+    @JsonIgnore
     @OneToMany(mappedBy = "filial", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Staff> staffList;
 
 
     //o'quvchilar soni
+    @JsonIgnore
     @OneToMany(mappedBy = "filial", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Group> groups;
 }
