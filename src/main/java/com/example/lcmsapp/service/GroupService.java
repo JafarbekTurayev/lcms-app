@@ -92,7 +92,7 @@ public class GroupService {
     }
 
     public ApiResponse edit(Long id, GroupDTO groupDTO) {
-        Group group = groupRepository.findById(id).orElseThrow();
+        Group group = groupRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("group", "id", id));
         Filial filial = filialRepository.findById(groupDTO.getFilialId()).orElseThrow(() -> new ResourceNotFoundException("filial", "id", groupDTO.getFilialId()));
         Course course = courseRepository.findById(groupDTO.getCourseId()).orElseThrow(() -> new ResourceNotFoundException("course", "id", groupDTO.getCourseId()));
 
