@@ -20,7 +20,7 @@ public class Filial extends AbsNameEntity {
     //xodimlar soni
     @JsonIgnore
     @OneToMany(mappedBy = "filial", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Staff> staffList;
+    private List<User> staffList;
 
 
     //o'quvchilar soni

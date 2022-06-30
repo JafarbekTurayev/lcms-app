@@ -1,22 +1,29 @@
 package com.example.lcmsapp.entity;
 
+import com.example.lcmsapp.entity.enums.AuthRole;
 import com.example.lcmsapp.entity.enums.PositionType;
 import com.example.lcmsapp.entity.template.AbsEntity;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.util.Set;
 
-@Entity
+@Entity(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 @ToString
 @Builder
-public class Staff extends AbsEntity {
+public class User extends AbsEntity {
+
+    @ManyToMany
+    private Set<Role> roles;
+
+//    @Enumerated
+//    @ElementCollection
+//    private Set<AuthRole> authRole;
+
     private String fullName, phone;
 
     private Double salary;
