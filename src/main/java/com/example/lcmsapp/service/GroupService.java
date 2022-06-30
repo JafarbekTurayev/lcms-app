@@ -2,6 +2,7 @@ package com.example.lcmsapp.service;
 
 import com.example.lcmsapp.dto.ApiResponse;
 import com.example.lcmsapp.dto.GroupDTO;
+import com.example.lcmsapp.dto.ResGroupDTO;
 import com.example.lcmsapp.entity.Course;
 import com.example.lcmsapp.entity.Filial;
 import com.example.lcmsapp.entity.Group;
@@ -12,11 +13,13 @@ import com.example.lcmsapp.repository.GroupRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,13 +39,14 @@ public class GroupService {
             throw new RuntimeException("Bunday nomli guruh mavjud!!!");
         group.setName(groupDTO.getName());
         Group save = groupRepository.save(group);
+
         //maptoDTO
-        return ApiResponse.builder().data(save).message("Saved").success(true).build();
+        return ApiResponse.builder().data(toDTO(save)).message("Saved").success(true).build();
     }
 
     public ApiResponse<Group> getOne(Long id) {
         Group group = groupRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Group", "id", id));
-        return new ApiResponse("Mana", group, true);
+        return new ApiResponse("Mana", toDTO(group), true);
     }
 
 
@@ -84,7 +88,7 @@ public class GroupService {
         else {
             data = groupRepository.findAllByFilial_NameContainingIgnoreCaseAndCourse_NameContainingIgnoreCaseAndNameContainingIgnoreCase(filialName, courseName, search, pageable);
         }
-        return ApiResponse.builder().data(data).message("OK").success(true).build();
+        return ApiResponse.builder().data(toDTOPage(data)).message("OK").success(true).build();
     }
 
     public ApiResponse edit(Long id, GroupDTO groupDTO) {
@@ -97,6 +101,22 @@ public class GroupService {
         group.setFilial(filial);
         Group save = groupRepository.save(group);
         return ApiResponse.builder().success(true).message("Edited!").data(save).build();
+    }
+
+
+    //mapToDTO Group -> GroupDTO
+    public ResGroupDTO toDTO(Group group) {
+        return ResGroupDTO.builder()
+                .name(group.getName())
+                .courseName(group.getCourse().getName())
+                .filialName(group.getFilial().getName())
+                .build();
+    }
+
+    //mapTODTOList -> toDTOPAGE
+    public Page<ResGroupDTO> toDTOPage(Page<Group> groups) {
+        List<ResGroupDTO> collect = groups.stream().map(this::toDTO).collect(Collectors.toList());
+        return new PageImpl<>(collect);
     }
 }
 
