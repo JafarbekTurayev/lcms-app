@@ -35,14 +35,32 @@ public class GroupController {
     }
 
     //getOne
-
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getOne(@PathVariable Long id) {
+        ApiResponse response = groupService.getOne(id);
+        return ResponseEntity.ok(response);
+    }
 
     //getAll va pagination va search va filtr byCourse filterbyFilial
-
+    @GetMapping
+    public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "") String search, @RequestParam(value = "filial", defaultValue = "") String filialName, @RequestParam(value = "course", defaultValue = "") String courseName) {
+        ApiResponse response = groupService.getAll(page, size, search, filialName, courseName);
+        return ResponseEntity.ok(response);
+    }
 
     //update
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody GroupDTO groupDTO) {
+        ApiResponse response = groupService.edit(id, groupDTO);
+        return ResponseEntity.status(response.isSuccess() ? 200 : 404).body(response);
+    }
 
     //delete
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        ApiResponse response = groupService.remove(id);
+        return ResponseEntity.status(response.isSuccess() ? 200 : 404).body(response);
+    }
 
 
     //validation ishlashi un metod
