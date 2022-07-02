@@ -51,4 +51,19 @@ public class AttachmentController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + attachment.getFileName() + "\"")
                 .body(resource);
     }
+
+
+    //filesave DB
+    @PostMapping("/uploadDB")
+    public ResponseEntity<?> saveToDB(MultipartHttpServletRequest request) {
+        ApiResponse response = attachmentService.uploadDB(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/downloadDB/{attachmentId}")
+    public ResponseEntity<?> downloadDB(@PathVariable(value = "attachmentId") UUID id) {
+       return attachmentService.downloadDB(id);
+    }
+
+
 }
