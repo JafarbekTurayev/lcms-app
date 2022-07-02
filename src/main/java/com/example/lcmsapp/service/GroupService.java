@@ -1,8 +1,8 @@
 package com.example.lcmsapp.service;
 
-import com.example.lcmsapp.dto.ApiResponse;
-import com.example.lcmsapp.dto.GroupDTO;
-import com.example.lcmsapp.dto.ResGroupDTO;
+import com.example.lcmsapp.config.dto.ApiResponse;
+import com.example.lcmsapp.config.dto.GroupDTO;
+import com.example.lcmsapp.config.dto.ResGroupDTO;
 import com.example.lcmsapp.entity.Course;
 import com.example.lcmsapp.entity.Filial;
 import com.example.lcmsapp.entity.Group;
@@ -11,7 +11,6 @@ import com.example.lcmsapp.repository.CourseRepository;
 import com.example.lcmsapp.repository.FilialRepository;
 import com.example.lcmsapp.repository.GroupRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;

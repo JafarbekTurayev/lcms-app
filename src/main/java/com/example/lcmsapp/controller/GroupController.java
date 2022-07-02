@@ -1,13 +1,9 @@
 package com.example.lcmsapp.controller;
 
-import com.example.lcmsapp.dto.ApiResponse;
-import com.example.lcmsapp.dto.GroupDTO;
-import com.example.lcmsapp.entity.Group;
+import com.example.lcmsapp.config.dto.ApiResponse;
+import com.example.lcmsapp.config.dto.GroupDTO;
 import com.example.lcmsapp.repository.GroupRepository;
 import com.example.lcmsapp.service.GroupService;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

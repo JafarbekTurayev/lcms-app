@@ -1,4 +1,4 @@
-package com.example.lcmsapp.dto;
+package com.example.lcmsapp.config.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
