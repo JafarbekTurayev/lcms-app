@@ -101,7 +101,7 @@ public class PaymentService {
 
 
         if (filial.equals("") && student.equals("") && group.equals("")) {
-            payments = paymentRepository.findAllByCreatedAtBetween(stDate, enDate);
+//            payments = paymentRepository.findAllByCreatedAtBetween(stDate, enDate);
         }
         // filial yoki student
 //        else if (group.equals("")) {
@@ -110,7 +110,7 @@ public class PaymentService {
 //        }
         // filial yoki guruh
         else if (student.equals("")) {
-            payments = paymentRepository.findAllByFilial_NameOrFilial_Groups(filial, groupList);
+//            payments = paymentRepository.findAllByFilial_NameOrFilial_Groups(filial, groupList);
         }
         return ApiResponse.builder().data(payments).success(true).message("ok").build();
     }

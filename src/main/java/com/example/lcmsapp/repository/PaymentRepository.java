@@ -25,7 +25,7 @@ public interface PaymentRepository extends JpaRepository<Payment, UUID> {
     //  data buyicha 1 - 10 gacha
 
     //            (vaqt va page buyicha)
-    Page<Payment> findAllByCreatedAtBetween(Date start, Date end);
+//    Page<Payment> findAllByCreatedAtBetween(Date start, Date end);
 
 
     //filial name va grouplist  (vaqt va page buyicha)
