@@ -25,7 +25,6 @@ public class Expense extends AbsEntity {
     @ManyToOne
     private Filial filial;
     private Double amount;
-
     @Enumerated
     private PayType payType;
 }
