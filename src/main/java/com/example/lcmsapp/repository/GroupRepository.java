@@ -19,4 +19,6 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
 
     //jpa query
     boolean existsByNameAndFilial_IdAndCourse_Id(String name, Long filialId, Long courseId);
+
+    List<Group> findAllByNameContainingIgnoreCase(String name);
 }
