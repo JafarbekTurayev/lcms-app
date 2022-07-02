@@ -26,7 +26,6 @@ public class GroupController {
     private final GroupRepository groupRepository;
     private final GroupService groupService;
 
-    //save
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody GroupDTO groupDTO) {
         //Restcontroller Adviceni o'tish kerak oddiy exception ishlamadi
