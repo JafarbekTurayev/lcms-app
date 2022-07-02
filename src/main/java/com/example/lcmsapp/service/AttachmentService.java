@@ -15,6 +15,7 @@ import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -26,18 +27,22 @@ public class AttachmentService {
     @SneakyThrows
     public ApiResponse uploadFileSystem(MultipartHttpServletRequest request) {
 //        List<MultipartFile> ketmon = request.getFiles("file");
-        MultipartFile file = request.getFile("file");
+//        MultipartFile file = request.getFile("file");
 
-        Attachment attachment = new Attachment();
-        attachment.setFileName(file.getOriginalFilename());
-        attachment.setContentType(file.getContentType());
-        attachment.setSize(file.getSize());
+        Iterator<String> fileNames = request.getFileNames();
+        Attachment save = null;
+        while (fileNames.hasNext()) {
+            Attachment attachment = new Attachment();
+            MultipartFile file = request.getFile(fileNames.next());
+            attachment.setFileName(file.getOriginalFilename());
+            attachment.setContentType(file.getContentType());
+            attachment.setSize(file.getSize());
 
+            Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
 
-        Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
-
-        attachment.setUrl(this.root + file.getOriginalFilename());
-        Attachment save = attachmentRepository.save(attachment);
+            attachment.setUrl(this.root + file.getOriginalFilename());
+            save = attachmentRepository.save(attachment);
+        }
         return ApiResponse.builder().success(true).message(save.getFileName() + " nomli fayl saqlandi").build();
     }
 }
