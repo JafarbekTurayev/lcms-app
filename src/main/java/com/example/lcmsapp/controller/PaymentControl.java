@@ -29,7 +29,7 @@ public class PaymentControl {
 
     @PostMapping
     public ResponseEntity<?> createPayment(@Valid @RequestBody PaymentDto paymentDto) {
-        ApiResponse<Payment> apiResponse = paymentService.save(paymentDto);
+        ApiResponse<?> apiResponse = paymentService.save(paymentDto);
         return ResponseEntity.status(apiResponse.isSuccess() ? 201 : 409).body(apiResponse);
     }
 
@@ -49,7 +49,7 @@ public class PaymentControl {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getOne(@PathVariable String id) {
-        ApiResponse<Payment> one = paymentService.getOne(id);
+        ApiResponse<?> one = paymentService.getOne(id);
         return new ResponseEntity<>(one, HttpStatus.OK);
     }
     @DeleteMapping("/{id}")

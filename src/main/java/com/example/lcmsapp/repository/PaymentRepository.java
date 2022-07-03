@@ -23,10 +23,10 @@ public interface PaymentRepository extends JpaRepository<Payment, UUID> {
       // (vaqt va page buyicha)
       Page<Payment> findAllByCreatedAtBetween(Date start, Date end, Pageable pageable);
 
-      Page<Payment> findAllByCreatedAtBetweenOrStudent_FullName(Date start,Date end,String student,Pageable pageable);
-      Page<Payment> findAllByCreatedAtBetweenOrFilial_Name(Date start,Date end,String filial,Pageable pageable);
+      Page<Payment> findAllByCreatedAtBetweenAndStudent_FullNameContainingIgnoreCase(Date start,Date end,String student,Pageable pageable);
+      Page<Payment> findAllByCreatedAtBetweenAndFilial_NameContainingIgnoreCase(Date start,Date end,String filial,Pageable pageable);
 
-      Page<Payment> findAllByCreatedAtBetweenOrStudent_FullNameAndFilial_Name(Date start,Date end,String full_name,String name, Pageable pageable);
+      Page<Payment> findAllByCreatedAtBetweenAndStudent_FullNameContainingIgnoreCaseAndFilial_NameContainingIgnoreCase(Date start,Date end,String full_name,String name, Pageable pageable);
 
 
 
