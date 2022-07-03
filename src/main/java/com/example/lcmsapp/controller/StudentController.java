@@ -52,8 +52,8 @@ public class StudentController {
         return ResponseEntity.status(response.isSuccess()? HttpStatus.OK:HttpStatus.NOT_FOUND).body(response);
     }
 
-    @PutMapping("/edit/{uuid}")
-    public ResponseEntity editStudent(@PathVariable UUID uuid,@Valid @RequestBody StudentDTO studentDTO){
+    @PutMapping("/{uuid}")
+    public ResponseEntity<?> editStudent(@PathVariable UUID uuid,@Valid @RequestBody StudentDTO studentDTO){
         ApiResponse response=studentService.edit(uuid,studentDTO);
         return ResponseEntity.status(response.isSuccess()? 200:404).body(response);
     }
@@ -61,12 +61,12 @@ public class StudentController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
+        Map<String, String> e = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
+            e.put(fieldName, errorMessage);
         });
-        return errors;
+        return e;
     }
 }
