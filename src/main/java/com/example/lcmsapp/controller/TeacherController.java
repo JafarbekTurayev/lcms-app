@@ -39,23 +39,25 @@ public class TeacherController {
     }
 
     //getAll va pagination va search va filtr byCourse filterbyFilial
-
     @GetMapping
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(teacherService.getAll());
+    public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "") String search,
+                                    @RequestParam(value = "phone", defaultValue = "") String phone,
+                                    @RequestParam(value = "course", defaultValue = "") String courseName) {
+        ApiResponse response = teacherService.getAll(page, size, search, phone, courseName);
+        return ResponseEntity.ok(response);
     }
 
     //update
 
     @PutMapping("{uuid}")
-    public ResponseEntity<?> update(@PathVariable UUID uuid,@RequestBody TeacherDTO teacherDTO) {
+    public ResponseEntity<?> update(@PathVariable UUID uuid, @RequestBody TeacherDTO teacherDTO) {
         ApiResponse update = teacherService.update(uuid, teacherDTO);
         return ResponseEntity.status(update.isSuccess() ? 200 : 409).body(update);
     }
 
     //delete
     @DeleteMapping("{uuid}")
-    public ResponseEntity<?> delete(@PathVariable UUID uuid){
+    public ResponseEntity<?> delete(@PathVariable UUID uuid) {
         ApiResponse delete = teacherService.delete(uuid);
         return ResponseEntity.status(delete.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(delete);
     }

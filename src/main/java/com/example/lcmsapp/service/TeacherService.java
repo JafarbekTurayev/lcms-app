@@ -3,15 +3,15 @@ package com.example.lcmsapp.service;
 import com.example.lcmsapp.dto.ApiResponse;
 import com.example.lcmsapp.dto.TeacherDTO;
 import com.example.lcmsapp.entity.Course;
-import com.example.lcmsapp.entity.Filial;
 import com.example.lcmsapp.entity.Teacher;
-import com.example.lcmsapp.entity.enums.PositionType;
 import com.example.lcmsapp.exception.ResourceNotFoundException;
 import com.example.lcmsapp.repository.CourseRepository;
-import com.example.lcmsapp.repository.FilialRepository;
 import com.example.lcmsapp.repository.TeacherRepository;
 import com.example.lcmsapp.util.DateFormatUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -54,9 +54,9 @@ public class TeacherService {
 
     }
 
-    public ApiResponse getAll() {
-        return ApiResponse.builder().data(teacherRepository.findAll()).success(true).message("Mana").build();
-    }
+//    public ApiResponse getAll() {
+//        return ApiResponse.builder().data(teacherRepository.findAll()).success(true).message("Mana").build();
+//    }
 
     public ApiResponse update(UUID uuid, TeacherDTO teacherDTO) {
         Teacher teacher = teacherRepository.findById(uuid).orElseThrow(() -> new RuntimeException("Bunaqa Teacher topilmadi"));
@@ -84,5 +84,18 @@ public class TeacherService {
         Teacher teacher = teacherRepository.findById(uuid).orElseThrow(() -> new RuntimeException("Not Found!!!"));
         teacherRepository.deleteById(uuid);
         return ApiResponse.builder().data(teacher).success(true).message("Deleted!!!").build();
+    }
+
+    public ApiResponse getAll(int page, int size, String search, String phone, String courseName) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Teacher> data = null;
+
+        //findAll 1-variant
+        if (search.equals("") && phone.equals("") && courseName.equals("")) {
+            data = teacherRepository.findAll(pageable);
+        }else {
+            data = teacherRepository.findAllByFullNameContainingIgnoreCaseAndPhoneContainingIgnoreCaseAndCourse_NameContainingIgnoreCase(search, phone, courseName, pageable);
+        }
+        return ApiResponse.builder().data(data).message("OK").success(true).build();
     }
 }
