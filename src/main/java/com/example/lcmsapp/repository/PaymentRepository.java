@@ -1,15 +1,13 @@
 package com.example.lcmsapp.repository;
 
-import com.example.lcmsapp.entity.Group;
+
 import com.example.lcmsapp.entity.Payment;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-import java.awt.print.Pageable;
+
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -18,22 +16,18 @@ import java.util.UUID;
  * @project Edu-Center
  */
 public interface PaymentRepository extends JpaRepository<Payment, UUID> {
-    // hammasi paga va size
-    // filial buyicha
-    // student buyicha
-    //  guruh buyicha
-    //  data buyicha 1 - 10 gacha
+      // hammasi paga va size
+      // filial buyicha
+      // student buyicha
+      // data buyicha 1 - 10 gacha
+      // (vaqt va page buyicha)
+      Page<Payment> findAllByCreatedAtBetween(Date start, Date end, Pageable pageable);
 
-    //            (vaqt va page buyicha)
-//    Page<Payment> findAllByCreatedAtBetween(Date start, Date end);
+      Page<Payment> findAllByCreatedAtBetweenAndStudent_FullNameContainingIgnoreCase(Date start,Date end,String student,Pageable pageable);
+      Page<Payment> findAllByCreatedAtBetweenAndFilial_NameContainingIgnoreCase(Date start,Date end,String filial,Pageable pageable);
 
+      Page<Payment> findAllByCreatedAtBetweenAndStudent_FullNameContainingIgnoreCaseAndFilial_NameContainingIgnoreCase(Date start,Date end,String full_name,String name, Pageable pageable);
 
-    //filial name va grouplist  (vaqt va page buyicha)
-//      Page<Payment> findAllByFilial_NameOrFilial_Groups ( String filial, List<Group> groupList);
-//TODO native yozib ko'rish kerak
-
-    // filial name va student name (vaqt va page buyicha)
-//       Page<Payment> findAllFilial_NameContainingIgnoreCaseOrStudent_FullNameContainingIgnoreCase( String filial, String student);
 
 
 }

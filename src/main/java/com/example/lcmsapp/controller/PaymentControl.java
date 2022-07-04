@@ -1,5 +1,6 @@
 package com.example.lcmsapp.controller;
 
+
 import com.example.lcmsapp.dto.ApiResponse;
 import com.example.lcmsapp.dto.PaymentDto;
 import com.example.lcmsapp.entity.Payment;
@@ -12,7 +13,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author "Husniddin Ulachov"
@@ -27,7 +29,7 @@ public class PaymentControl {
 
     @PostMapping
     public ResponseEntity<?> createPayment(@Valid @RequestBody PaymentDto paymentDto) {
-        ApiResponse<Payment> apiResponse = paymentService.save(paymentDto);
+        ApiResponse<?> apiResponse = paymentService.save(paymentDto);
         return ResponseEntity.status(apiResponse.isSuccess() ? 201 : 409).body(apiResponse);
     }
 
@@ -38,27 +40,18 @@ public class PaymentControl {
             @RequestParam (defaultValue = "10") int size,
             @RequestParam (defaultValue = "")  String filial,
             @RequestParam (defaultValue = "") String student,
-            @RequestParam (defaultValue = "") String group,
             @RequestParam (defaultValue = "") String startDate,
             @RequestParam (defaultValue = "") String endDate
     ) {
-
-        ApiResponse<?> apiResponse = paymentService.getAll(page,size,filial,student,group,startDate,endDate);
+        ApiResponse<?> apiResponse = paymentService.getAll(page,size,filial,student,startDate,endDate);
         return ResponseEntity.ok(apiResponse);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getOne(@PathVariable String id) {
-        ApiResponse<Payment> one = paymentService.getOne(id);
+        ApiResponse<?> one = paymentService.getOne(id);
         return new ResponseEntity<>(one, HttpStatus.OK);
     }
-
-    @PutMapping
-    public ResponseEntity<?> update(@RequestParam String id, @Valid @RequestBody PaymentDto paymentDto) {
-        ApiResponse<Payment> apiResponse = paymentService.update(id, paymentDto);
-        return ResponseEntity.ok().body(apiResponse);
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable String id) {
         ApiResponse<String> delete = paymentService.delete(id);
