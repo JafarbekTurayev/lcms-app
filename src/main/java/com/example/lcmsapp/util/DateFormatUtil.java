@@ -4,6 +4,8 @@ import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -23,5 +25,11 @@ public class DateFormatUtil {
             throw new RuntimeException(e);
         }
         return date;
+    }
+
+    //string -> LocalDate
+    public LocalDate strToLocalDate(String date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return LocalDate.parse(date,formatter);
     }
 }
