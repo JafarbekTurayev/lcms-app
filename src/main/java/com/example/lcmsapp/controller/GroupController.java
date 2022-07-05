@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,8 @@ public class GroupController {
     private final GroupService groupService;
 
     //save
+//    @PreAuthorize(value = "hasAuthority('WRITE_GROUP')")
+//    -> permission based
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody GroupDTO groupDTO) {
         //Restcontroller Adviceni o'tish kerak oddiy exception ishlamadi
@@ -35,6 +38,7 @@ public class GroupController {
     }
 
     //getOne
+//    @PreAuthorize(value ="hasAnyRole('USER','ADMIN','MANAGER')") -> rolebased
     @GetMapping("/{id}")
     public ResponseEntity<?> getOne(@PathVariable Long id) {
         ApiResponse response = groupService.getOne(id);
