@@ -1,5 +1,7 @@
 package com.example.lcmsapp.config;
 
+import com.example.lcmsapp.service.AuthService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,7 +21,13 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true, securedEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+
+    private final AuthService authService;
+//    private final PasswordEncoder passwordEncoder;
+
 
 //role based
 //    @Override
@@ -34,15 +42,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    }
 
     //permission
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        //bazadan emas vaqtinchalik malumotni qo'shib turish
+//        auth.inMemoryAuthentication()
+//                .withUser("admin").password(passwordEncoder().encode("123")).authorities("WRITE_GROUP", "READ_GROUP", "DELETE_GROUP")
+//                .and()
+//                .withUser("user").password(passwordEncoder().encode("user")).authorities("READ_GROUP")
+//                .and()
+//                .withUser("manager").password(passwordEncoder().encode("111")).authorities("DELETE_GROUP");
+//    }
+
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //bazadan emas vaqtinchalik malumotni qo'shib turish
-        auth.inMemoryAuthentication()
-                .withUser("admin").password(passwordEncoder().encode("123")).authorities("WRITE_GROUP", "READ_GROUP", "DELETE_GROUP")
-                .and()
-                .withUser("user").password(passwordEncoder().encode("user")).authorities("READ_GROUP")
-                .and()
-                .withUser("manager").password(passwordEncoder().encode("111")).authorities("DELETE_GROUP");
+        auth.userDetailsService(authService).passwordEncoder(passwordEncoder());
     }
 
     @Override
