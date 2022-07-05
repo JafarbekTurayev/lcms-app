@@ -138,7 +138,7 @@ public class StudentService {
         byId.setContractDate(studentDTO.getContractDate());
         byId.setCourse(courses);
         byId.setGroups(groups);
-
+        byId.setStatus(studentDTO.getStatus());
         studentRepository.save(byId);
 
         return ApiResponse.builder().success(true).message("EDITED").build();

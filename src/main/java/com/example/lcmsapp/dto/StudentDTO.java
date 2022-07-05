@@ -1,6 +1,7 @@
 package com.example.lcmsapp.dto;
 
 import com.example.lcmsapp.entity.enums.GenderType;
+import com.example.lcmsapp.entity.enums.StudentStatus;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -37,4 +38,5 @@ public class StudentDTO {
     private List<Long> courseIds;
     @NotNull(message = "Gruppa tanlash shart")
     private List<Long> groupIds;
+    private StudentStatus status;
 }
