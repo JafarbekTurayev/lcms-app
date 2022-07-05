@@ -83,14 +83,20 @@ public class StudentService {
     }
 
     public ApiResponse getAll(int page, int size, String search, String filialName
-//                              Double balance
-    ) {
+//            , Double balance
+           ) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Student> data = null;
 
-        if (search.equals("") && filialName.equals("")){
+        if (
+//                balance==(-1)
+//                &&
+                search.equals("") && filialName.equals("")){
             data = studentRepository.findAll(pageable);
         }
+//        else if(search.equals("")&&filialName.equals("")){
+//           data= studentRepository.findAllByBalance(balance,pageable);
+//        }
         else {
           data= studentRepository
                   .findAllByFullNameContainingIgnoreCaseAndFilial_NameContainingIgnoreCase

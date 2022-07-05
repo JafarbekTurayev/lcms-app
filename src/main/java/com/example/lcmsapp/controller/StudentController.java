@@ -32,11 +32,11 @@ public class StudentController {
                                            @RequestParam(defaultValue = "10") int size,
                                            @RequestParam(defaultValue = "") String search,
                                            @RequestParam(value = "filial", defaultValue = "") String filialName
-//                                           @RequestParam Double balance
+//                                           @RequestParam(value = "-1") Double balance
                                            ){
         ApiResponse response=studentService.getAll(page,size,search,filialName
-//                balance
-        );
+//                ,balance
+                );
         return ResponseEntity.status(response.isSuccess()?HttpStatus.FOUND:HttpStatus.CONFLICT).body(response);
     }
 
