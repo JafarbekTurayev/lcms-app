@@ -26,6 +26,10 @@ public class JwtProvider {
                 .getBody().getSubject();
     }
 
+    //valiadtsiya qilish kerak va muddatini tekshirish kerak
+//    public boolean validateToken(String token){
+//
+//    }
 
 
 
