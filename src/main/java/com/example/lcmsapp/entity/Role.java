@@ -5,17 +5,22 @@ import lombok.*;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 @Setter
 @Getter
 @ToString
-public class Role extends AbsNameEntity {
-    public Role(Long id, String name) {
-        super(id, name);
-    }
+@AllArgsConstructor
+@NoArgsConstructor
+public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Role() {
+    private String name;
+    private boolean active;
 
-    }
 }

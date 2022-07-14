@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -42,15 +43,15 @@ public class User extends AbsEntity implements UserDetails {
     private PositionType positionType;
 
     private String password;
-    private boolean accountNonExpired; //accountni vaqti o'tmaganmi?
-    private boolean accountNonLocked; //bloklanmaganmi?
-    private boolean credentialsNonExpired; //parol o'znikimi
-    private boolean enabled; //tizimga kimdir kirganda undan foydalanish huquqi
+    private boolean accountNonExpired = true; //accountni vaqti o'tmaganmi?
+    private boolean accountNonLocked = true; //bloklanmaganmi?
+    private boolean credentialsNonExpired = true; //parol o'znikimi
+    private boolean enabled = true; //tizimga kimdir kirganda undan foydalanish huquqi
 
     //bu tizimdan foydalanuvchini yo permissionlari bo'ladi yoki rollari ro'yxati
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> grantedAuthorityList = null;
+        List<GrantedAuthority> grantedAuthorityList = new ArrayList<>();
         for (Role role : this.roles) {
             grantedAuthorityList.add(new SimpleGrantedAuthority(role.getName()));
         }

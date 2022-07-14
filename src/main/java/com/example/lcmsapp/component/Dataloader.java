@@ -7,9 +7,12 @@ import com.example.lcmsapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,13 +30,18 @@ public class Dataloader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if (mode.equals("always")) {
-            Role admin = roleRepository.save(new Role(1l, "ADMIN"));
-            Role user = roleRepository.save(new Role(2l, "USER"));
-            Role mentor = roleRepository.save(new Role(3l, "MENTOR"));
-            Role moderator = roleRepository.save(new Role(4l, "MODERATOR"));
+            Role admin = roleRepository.save(new Role(1l, "ADMIN",true));
+            Role user = roleRepository.save(new Role(2l, "USER",true));
+            Role mentor = roleRepository.save(new Role(3l, "MENTOR",true));
+            Role moderator = roleRepository.save(new Role(4l, "MODERATOR",true));
 
-            userRepository.save(new User(Set.of(admin, mentor), "TJU", "+998912455897", passwordEncoder.encode("admin"),true));
-            userRepository.save(new User(Set.of(user), "AAA", "+998901112233", passwordEncoder.encode("123"),true));
+            Set<Role> roles = new HashSet<>();
+            roles.add(admin);
+            roles.add(user);
+
+            userRepository.save(new User(roles, "TJU", "admin", passwordEncoder.encode("123"), true));
+            userRepository.save(new User(roles, "AAA", "user", passwordEncoder.encode("123"), true));
         }
     }
+
 }
