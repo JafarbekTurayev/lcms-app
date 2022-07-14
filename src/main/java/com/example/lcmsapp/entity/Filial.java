@@ -22,7 +22,6 @@ public class Filial extends AbsNameEntity {
     @OneToMany(mappedBy = "filial", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<User> staffList;
 
-
     //o'quvchilar soni
     @JsonIgnore
     @OneToMany(mappedBy = "filial", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
