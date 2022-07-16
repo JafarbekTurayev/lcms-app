@@ -1,6 +1,8 @@
 package com.example.lcmsapp.service;
 
 
+import com.example.lcmsapp.client.JsonPlaceholderClient;
+import com.example.lcmsapp.client.UserResponse;
 import com.example.lcmsapp.dto.ApiResponse;
 import com.example.lcmsapp.dto.PaymentDto;
 import com.example.lcmsapp.dto.ResPaymentDto;
@@ -32,6 +34,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PaymentService {
+    private final JsonPlaceholderClient jsonPlaceholderClient;
     private final StudentRepository studentRepository;
     private final PaymentRepository paymentRepository;
 
@@ -54,13 +57,14 @@ public class PaymentService {
             }
         }
         Payment save = paymentRepository.save(payment);
-        return new ApiResponse<>("saved",toDTO(save), true);
+        return new ApiResponse<>("saved", toDTO(save), true);
     }
 
     public ApiResponse<?> getOne(String id) {
         Payment payment = paymentRepository.findById(UUID.fromString(id)).orElseThrow(() -> new ResourceNotFoundException("payment", "id", id));
         return new ApiResponse<>("GetOne", toDTO(payment), true);
     }
+
     public ApiResponse<String> delete(String id) {
         paymentRepository.findById(UUID.fromString(id)).orElseThrow(() -> new ResourceNotFoundException("payment", "id", id));
         paymentRepository.deleteById(UUID.fromString(id));
@@ -68,12 +72,18 @@ public class PaymentService {
     }
 
     public ApiResponse<?> getAll(int page, int size, String filial, String student,
-                                  String startDate, String endDate) {
+                                 String startDate, String endDate) {
+
+        //RESTCLIENT ishlatmoqchimz yani to'lovlar boshqa bank enddda deb yoki userlar
+        List<UserResponse> allUsers = jsonPlaceholderClient.getAllUsers();
+
+        System.out.println(allUsers);
+
         Page<Payment> payments = null;
 
         Pageable pageable = PageRequest.of(page, size);
 //      hech nima kiritmagan holat
-        if (filial.equals("") && student.equals("")  && startDate.equals("") && endDate.equals("")) {
+        if (filial.equals("") && student.equals("") && startDate.equals("") && endDate.equals("")) {
             payments = paymentRepository.findAll(pageable);
         }
 //     faqat vaqt oraligini kiritilgan holat
@@ -96,9 +106,10 @@ public class PaymentService {
             studentRepository.findByFullNameContainingIgnoreCase(student).orElseThrow(() -> new ResourceNotFoundException("student ", " fullName  ?: ", student));
             payments = paymentRepository.findAllByCreatedAtBetweenAndStudent_FullNameContainingIgnoreCaseAndFilial_NameContainingIgnoreCase(dateFormat.stringtoDate(startDate), dateFormat.stringtoDate(endDate), student, filial, pageable);
         }
-        return ApiResponse.builder().data(toDTOPage(payments)).success(true).message("ok").build();
+        return ApiResponse.builder().data(allUsers).success(true).message("ok").build();
     }
-    public  ResPaymentDto toDTO(Payment payment){
+
+    public ResPaymentDto toDTO(Payment payment) {
         return ResPaymentDto.builder()
                 .filial(payment.getFilial().getName())
                 .student(payment.getStudent().getFullName())
@@ -106,8 +117,9 @@ public class PaymentService {
                 .amount(payment.getAmount())
                 .build();
     }
-    public Page<ResPaymentDto> toDTOPage(Page<Payment> payments){
-        List<ResPaymentDto> collect =payments.stream().map(this::toDTO).collect(Collectors.toList());
-        return new PageImpl<>(collect) ;
+
+    public Page<ResPaymentDto> toDTOPage(Page<Payment> payments) {
+        List<ResPaymentDto> collect = payments.stream().map(this::toDTO).collect(Collectors.toList());
+        return new PageImpl<>(collect);
     }
 }
