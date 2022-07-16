@@ -1,5 +1,6 @@
 package com.example.lcmsapp.config;
 
+import com.example.lcmsapp.security.JwtAuthEntryPoint;
 import com.example.lcmsapp.security.JwtFilter;
 import com.example.lcmsapp.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -22,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class XavfsizlikSozlamasi extends WebSecurityConfigurerAdapter {
     private final AuthService authService;
     private final JwtFilter jwtFilter;
+    private final JwtAuthEntryPoint jwtAuthEntryPoint;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -33,13 +36,18 @@ public class XavfsizlikSozlamasi extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .cors().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthEntryPoint)
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests()
-                .antMatchers("/api/auth/login", "/api/group").permitAll()
+                .antMatchers("/api/auth/login").permitAll()
                 .antMatchers("/api/**")
                 .authenticated();
 //                .and()
 //                .httpBasic();
-      //har bir zaprosdan oldin shu classga kirib chiqadi
+        //har bir zaprosdan oldin shu classga kirib chiqadi
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
