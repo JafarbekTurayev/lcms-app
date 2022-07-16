@@ -39,7 +39,7 @@ public class GroupController {
     //save
 //    @PreAuthorize(value = "hasAuthority('WRITE_GROUP')")
 //    -> permission based
-    @PreAuthorize(value = "hasAnyRole('ADMIN','MODERATOR')")
+    @PreAuthorize(value = "hasAnyAuthority('ADMIN','MODERATOR')")
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody GroupDTO groupDTO) {
         //Restcontroller Adviceni o'tish kerak oddiy exception ishlamadi
