@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -32,6 +33,9 @@ public class User extends AbsEntity implements UserDetails {
 
     private String fullName, phone;
 
+    @Column(nullable = false, unique = true)
+    private String email;
+    private String code;
     private Double salary;
 
     private boolean active = true;
@@ -89,7 +93,8 @@ public class User extends AbsEntity implements UserDetails {
         return this.enabled;
     }
 
-    public User(Set<Role> roles, String fullName, String phone, String password, boolean enabled) {
+    public User(String email,Set<Role> roles, String fullName, String phone, String password, boolean enabled) {
+        this.email = email;
         this.roles = roles;
         this.fullName = fullName;
         this.phone = phone;

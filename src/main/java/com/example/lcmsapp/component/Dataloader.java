@@ -39,8 +39,8 @@ public class Dataloader implements CommandLineRunner {
             roles.add(admin);
             roles.add(user);
 
-            userRepository.save(new User(roles, "TJU", "admin", passwordEncoder.encode("123"), true));
-            userRepository.save(new User(roles, "AAA", "user", passwordEncoder.encode("123"), true));
+            userRepository.save(new User("jekka",roles, "TJU", "admin", passwordEncoder.encode("123"), true));
+            userRepository.save(new User("pekka",roles, "AAA", "user", passwordEncoder.encode("123"), true));
         }
     }
 
