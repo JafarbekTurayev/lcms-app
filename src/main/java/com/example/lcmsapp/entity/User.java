@@ -1,6 +1,5 @@
 package com.example.lcmsapp.entity;
 
-import com.example.lcmsapp.entity.enums.AuthRole;
 import com.example.lcmsapp.entity.enums.PositionType;
 import com.example.lcmsapp.entity.template.AbsEntity;
 import lombok.*;
@@ -23,6 +22,12 @@ import java.util.Set;
 @Builder
 public class User extends AbsEntity implements UserDetails {
 
+    //bot foydalanuvchi
+    private String chatId;
+
+    private String state;
+    private Double lat;
+    private Double lon;
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
@@ -32,6 +37,9 @@ public class User extends AbsEntity implements UserDetails {
 
     private String fullName, phone;
 
+    @Column(unique = true)
+    private String email;
+    private String code;
     private Double salary;
 
     private boolean active = true;
@@ -89,7 +97,8 @@ public class User extends AbsEntity implements UserDetails {
         return this.enabled;
     }
 
-    public User(Set<Role> roles, String fullName, String phone, String password, boolean enabled) {
+    public User(String email, Set<Role> roles, String fullName, String phone, String password, boolean enabled) {
+        this.email = email;
         this.roles = roles;
         this.fullName = fullName;
         this.phone = phone;
